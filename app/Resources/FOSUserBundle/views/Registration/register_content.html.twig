@@ -1,0 +1,11 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<h2 class="form-signin-heading">Rejestracja konta</h2>
+
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="form-horizontal fos_user_registration_register">
+    {{ form_widget(form) }}
+    
+    
+    <input class="pull-right btn btn-primary" type="submit" value="{{ 'registration.submit'|trans }}" />
+    
+</form>
