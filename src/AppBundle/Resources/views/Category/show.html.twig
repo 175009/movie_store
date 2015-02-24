@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Filmy z kategorii: {{ category.name }}{% endblock %}
+
+{% block body %}
+<h1>{{ block('title') }}</h1>
+
+<div class="row">
+    {% include 'AppBundle:Movie:list.html.twig' with {'movies': movies} %}
+</div>
+
+{% endblock %}
