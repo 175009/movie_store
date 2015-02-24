@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    
+    <div class="row">
+        <h2>{{ block('title') }}</h2>
+        
+        {% include 'AppBundle:Movie:list.html.twig' with {'movies': movies} %}
+      
+    </div>
+        
+{% endblock %}

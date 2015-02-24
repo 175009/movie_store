@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MovieShop.pl - wypożyczalnia filmów{% endblock %}
+
+{% block body %}
+    
+    <h1>Wypożyczalnia filmów</h1>
+      
+    <div class="row">
+        {% for category in categories %}
+            <a class="label label-info" href="{{ path('category_show', {'slug': category.slug}) }}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+    
+    <div class="row">
+        
+        <div class="col-md-6">
+            <h3>Najczęściej wypożyczane</h3>
+            <ul>
+                {% for movie in popular %}
+                    <li>{{ movie.name }}  <span class="badge">{{ movie.nbOrders }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="col-md-6">
+            <h3>Najczęściej recenzowane</h3>
+            <ul>
+                {% for movie in frequentlyReviewed %}
+                    <li>{{ movie.name }}  <span class="badge">{{ movie.nbReviews }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <h2>Lista dostępnych filmów</h2>
+        
+        {% include 'AppBundle:Movie:list.html.twig' with {'movies': movies} %}
+      
+    </div>
+        
+{% endblock %}
