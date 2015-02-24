@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Plakat</th>
+            <th>Tytuł filmu</th>
+            <th>Gatunek</th>
+            <th>Cena wypożyczenia</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for movie in movies %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('movie_show', {'slug': movie.slug}) }}" title="Zobacz więcej o: {{ movie.name }}"><img width=100 src="{{ asset('uploads/' ~ movie.cover) }}" /></a></td>
+                <td><a href="{{ path('movie_show', {'slug': movie.slug}) }}" title="Zobacz więcej o: {{ movie.name }}">{{ movie.name }}</a></td>
+                <td>{{ movie.categories|join(", ") }}</td>
+                <td>{{ movie.price|number_format }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

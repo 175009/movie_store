@@ -1,0 +1,51 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{{ movie.name }}{% endblock %}
+
+{% block body %}
+
+<h1>{{ block('title') }}</h1>
+  
+<div class="row">
+    
+    <img class="pull-right" width=200 src="{{ asset('uploads/' ~ movie.cover) }}" />
+    
+    {% for category in movie.categories %}
+        <a class="label label-info" href="{{ path('category_show', {'slug': category.slug}) }}">{{ category.name }}</a>
+    {% endfor %}
+  
+    <h3>Cena <span class="label label-default">{{ movie.price }} zł</span></h3>
+  
+    <h3>Opis</h3>
+    <p>{{ movie.description }}</p>
+  
+  
+    <h3>Obsada</h3>
+    <p>{{ movie.actores|raw }}</p>
+  
+    <a href="{{ path('movie_rent', {'slug': movie.slug}) }}" class="btn btn-info">Wypożycz</a>
+  
+    <h3>Recenzje {% if app.user %}<a href="{{ path('movie_add_review', {'slug': movie.slug}) }}" class=" pull-right btn btn-success">Dodaj recenzje</a>{% endif %}</h3>
+    {% if not app.user %}
+        <p><a href="{{ path('fos_user_security_login') }}">Zaloguj się</a> by móc dodawać recenzje.</p>
+    {% endif %}
+    
+    <ul class="list-group">
+    {% for revision in movie.approvedReviews %}
+        
+        <li class="list-group-item ">
+            <span class="pull-right">Dodana dnia: {{ revision.createdAt|date('Y-m-d H:i:s') }}</span>
+            <h4 class="list-group-item-heading">{{ revision.user }}</h4>
+            <p class="list-group-item-text">{{ revision.content }}</p>
+        </li>
+        
+    {% else %}
+    
+        <li class="list-group-item ">Ten film nie posiada jeszcze żadnych recenzji</li>
+      
+    {% endfor %}
+    </ul>
+    
+</div>
+  
+{% endblock %}
