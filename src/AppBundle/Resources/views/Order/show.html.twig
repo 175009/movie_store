@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Zamówienie: #{{ order.id }}{% endblock %}
+
+{% block body %}
+<h1>{{ block('title') }}</h1>
+
+<h2>Lista zamówionych filmów</h2>
+
+{{ order.movies|length }}
+{% include 'AppBundle:Movie:list.html.twig' with {'movies': order.movies} %}
+
+
+{% endblock %}

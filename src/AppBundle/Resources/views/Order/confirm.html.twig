@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Zamówienie: #{{ order.id }}{% endblock %}
+
+{% block body %}
+<h1>{{ block('title') }}</h1>
+
+<p>Strona z informacjami of formie, warunkach i terminie płatności</p>
+
+<a href="{{ path('order_show', {'id': order.id}) }}">Szczegóły zamówienia</a>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <h1>Moje zamówienia</h1>
+    
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>ID zamówienia</th>
+              <th>Status</th>
+              <th>Ilość filmów</th>
+              <th>Data utworzenia</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ path('order_show', {'id': order.id}) }}">{{ order.id }}</a></td>
+                    <td>
+                        {% if order.status == 'paid' %}
+                            <span class="label label-success">Zapłacone</span>
+                        {% elseif order.status == 'processing' %}
+                            <span class="label label-warning">Przetwarzane</span>
+                        {% else %}
+                            <span class="label label-danger">Nowe</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ order.movies|length }}</td>
+                    <td>{{ order.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td><a href="{{ path('order_show', {'id': order.id}) }}">Szczegóły</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Brak zamówień</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+{% endblock %}
