@@ -1,0 +1,151 @@
+l<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\User as BaseUser;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity
+ */
+class User extends BaseUser
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+     * @var ArrayCollection
+     * 
+     * @ORM\OneToMany(targetEntity="MovieOrder", mappedBy="user")
+     */
+    protected $orders;
+    
+    /**
+     * @var ArrayCollection
+     * 
+     * * @ORM\OneToMany(targetEntity="MovieReview", mappedBy="user")
+     */
+    protected $reviews;
+    
+
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->orders = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getOrderedMovies()
+    {
+        $movies = array();
+        foreach ($this->getOrders() as $order) {
+            foreach ($order->getMovies() as $movie) {
+                // pomiń jeśli zamówienie nie jest opłacone
+                if (!$order->isPaid()) {
+                    continue;
+                }
+                
+                // opłacone filmy
+                if (!array_key_exists($movie->getId(), $movies)) {
+                    $movies[$movie->getId()] = $movie;
+                }
+            }
+        }
+        
+        return $movies;
+    }
+    
+    public function isOrderedMovie(Movie $movie)
+    {
+        $movies = $this->getOrderedMovies();
+        
+        return array_key_exists($movie->getId(), $movies);
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \AppBundle\Entity\MovieOrder $orders
+     * @return User
+     */
+    public function addOrder(\AppBundle\Entity\MovieOrder $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \AppBundle\Entity\MovieOrder $orders
+     */
+    public function removeOrder(\AppBundle\Entity\MovieOrder $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * Add reviews
+     *
+     * @param \AppBundle\Entity\MovieReview $reviews
+     * @return User
+     */
+    public function addReview(\AppBundle\Entity\MovieReview $reviews)
+    {
+        $this->reviews[] = $reviews;
+
+        return $this;
+    }
+
+    /**
+     * Remove reviews
+     *
+     * @param \AppBundle\Entity\MovieReview $reviews
+     */
+    public function removeReview(\AppBundle\Entity\MovieReview $reviews)
+    {
+        $this->reviews->removeElement($reviews);
+    }
+
+    /**
+     * Get reviews
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+}
