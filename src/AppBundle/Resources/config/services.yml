@@ -1,0 +1,4 @@
+services:
+    cart:
+        class: AppBundle\Service\Cart
+        arguments: [ "@session", "@doctrine.orm.entity_manager" ]
