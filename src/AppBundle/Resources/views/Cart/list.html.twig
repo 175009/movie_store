@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+      <div class="page-header">
+        <h1>Koszyk</h1>
+      </div>
+      <table class="table table-striped">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>Tytuł filmu</th>
+              <th>Gatunek</th>
+              <th>Cena wypożyczenia</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for movie in cart.movies %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ path('movie_show', {'slug': movie.slug}) }}">{{ movie.name }}</a></td>
+                    <td>{{ movie.categories|join(", ") }}</td>
+                    <td>{{ movie.price|number_format }}</td>
+                    <td><a href="{{ path('cart_remove', {'slug': movie.slug}) }}">usuń</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Koszyk jest pusty.</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+      
+    {% if cart.movies|length > 0 %}
+            
+        <a class="btn btn-info" href="{{ path('movie_order') }}" title="Złóż zamówienie">Złóż zamówienie</a>
+        
+    {% endif %}
+{% endblock %}
